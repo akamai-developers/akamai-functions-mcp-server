@@ -16,7 +16,7 @@ func RegisterAllPrompts(server *mcp_golang.Server) error {
 		"Provides instructions to retrieve an application by looking at all accounts you've access to", // Description
 		func(args FindAppByNameArguments) (*mcp_golang.PromptResponse, error) {
 
-			instruction := fmt.Sprintf("Use the `list_accounts` tool to fetch all accounts the current user has access to, for each account, use its account id and call into the 'list_apps' tool. Enrich the response of `list_tools`, so that every record includes the account id and account name it was discoverd in. Merge all the discoverd apps and filter applications using the following query: %s", args.Query)
+			instruction := fmt.Sprintf("Use the `search_app` tool using the following query: %s", args.Query)
 			instruction += "\nAfter fetching, provide a summarized list including the app name, app id, account name and account id"
 
 			// Construct the response

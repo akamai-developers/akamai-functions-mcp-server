@@ -1,5 +1,5 @@
 name = "aka-mcp"
-description = "aka-mcp"
+description = "An Akamai Functions MCP Server"
 homepage = "https://github.com/ThorstenHans/akamai-functions-mcp"
 version = "0.1.0"
 spin_compatibility = ">=2.0.0"

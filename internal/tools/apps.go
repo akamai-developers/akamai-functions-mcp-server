@@ -10,6 +10,64 @@ import (
 	mcp_golang "github.com/metoro-io/mcp-golang"
 )
 
+type SearchAppArguments struct {
+	Query string `json:"query" jsonschema:"required,description=A query to search apps for"`
+}
+
+type SearchResult struct {
+	AppName     string `json:"appName"`
+	AppId       string `json:"appId"`
+	AccountId   string `json:"accountId"`
+	AccountName string `json:"accountName"`
+}
+
+func SearchApp(args SearchAppArguments) (*mcp_golang.ToolResponse, error) {
+	if len(args.Query) == 0 {
+		return nil, fmt.Errorf("You must provide a query")
+	}
+	args.Query = strings.ToLower(args.Query)
+	command := []string{"aka", "info", "--format", "json"}
+	out, err := spin.RunCommand(command...)
+	if err != nil {
+		return nil, err
+	}
+	var accountInfo GetAccountInfoResponse
+
+	err = json.Unmarshal(out, &accountInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	apps := make([]SearchResult, 0)
+	for _, account := range accountInfo.AuthInfo.Accounts {
+		out, err := spin.RunCommand("aka", "apps", "list", "--format", "json", "--account-id", account.Id)
+		if err != nil {
+			return nil, err
+		}
+		var appsPerAccount []GetAppsResponse
+		err = json.Unmarshal(out, &appsPerAccount)
+		if err != nil {
+			return nil, err
+		}
+		for _, app := range appsPerAccount {
+			if strings.Contains(strings.ToLower(app.Name), args.Query) {
+				apps = append(apps, SearchResult{
+					AppId:       app.Id,
+					AppName:     app.Name,
+					AccountId:   account.Id,
+					AccountName: account.Name,
+				})
+			}
+		}
+	}
+	content, err := json.Marshal(apps)
+	if err != nil {
+		return nil, err
+	}
+	return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(string(content))), nil
+
+}
+
 type ListAppsArguments struct {
 	Account `jsonschema:"description=Optionally specify the desired Akamai Functions account by either specifying the account name or its identifier"`
 }

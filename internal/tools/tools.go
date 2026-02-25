@@ -5,7 +5,11 @@ import (
 )
 
 func RegisterAllTools(server *mcp_golang.Server) error {
-	err := server.RegisterTool("list_apps", "Get all Spin apps deployed to Akamai Functions", ListApps)
+	err := server.RegisterTool("search_app", "Find an app using the specified query within all your Akamai Functions accounts", SearchApp)
+	if err != nil {
+		return err
+	}
+	err = server.RegisterTool("list_apps", "Get all Spin apps deployed to Akamai Functions", ListApps)
 	if err != nil {
 		return err
 	}
