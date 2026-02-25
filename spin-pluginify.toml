@@ -1,0 +1,7 @@
+name = "aka-mcp"
+description = "aka-mcp"
+homepage = "https://github.com/ThorstenHans/akamai-functions-mcp"
+version = "0.1.0"
+spin_compatibility = ">=2.0.0"
+license = "Apache-2.0"
+package = "aka-mcp"
