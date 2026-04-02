@@ -1,43 +1,46 @@
 package tools
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ThorstenHans/akamai-functions-mcp/internal/spin"
-	mcp_golang "github.com/metoro-io/mcp-golang"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
-type GetAccountInfoResponse struct {
-	AuthInfo AuthInfo `json:"auth_info"`
+type spinAccountInfoResponse struct {
+	AuthInfo spinAuthInfo `json:"auth_info"`
 }
 
-type AuthInfo struct {
-	Accounts []AccountsInfo `json:"accounts"`
+type spinAuthInfo struct {
+	Accounts []AccountInfo `json:"accounts"`
 }
-type AccountsInfo struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+
+type ListAccountResponse struct {
+	Accounts []AccountInfo `json:"accounts" jsonschema:"List of Akamai Functions accounts you have access to"`
+}
+
+type AccountInfo struct {
+	Id   string `json:"id" jsonschema:"Unique Akamai Functions account identifier"`
+	Name string `json:"name" jsonschema:"The name of the Akamai Functions account"`
 }
 
 type ListAccountsArgs struct{}
 
-func ListAccounts(args ListAccountsArgs) (*mcp_golang.ToolResponse, error) {
+func (a *AkamaiFunctionsTools) ListAccounts(ctx context.Context, request mcp.CallToolRequest, args ListAccountsArgs) (ToolResponse[ListAccountResponse], error) {
 	command := []string{"aka", "info", "--format", "json"}
+	a.logger.Printf("Running command :%v", command)
 	out, err := spin.RunCommand(command...)
 	if err != nil {
-		return nil, err
+		return NewToolErrorResponse[ListAccountResponse](err.Error()), err
 	}
-	var accountInfo GetAccountInfoResponse
+	var accountInfo spinAccountInfoResponse
 
 	err = json.Unmarshal(out, &accountInfo)
 	if err != nil {
-		return nil, err
+		return NewToolErrorResponse[ListAccountResponse](err.Error()), err
 	}
-
-	res, err := json.Marshal(accountInfo.AuthInfo.Accounts)
-	if err != nil {
-		return nil, err
-	}
-
-	return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(string(res))), nil
+	return NewToolSuccessResponse(ListAccountResponse{
+		Accounts: accountInfo.AuthInfo.Accounts,
+	}), nil
 }
