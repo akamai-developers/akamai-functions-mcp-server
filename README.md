@@ -67,7 +67,6 @@ To let your AI Assistant use the server, add the `spin` command to your configur
 Update your `claude_desktop_config.json` (found in `~/Library/Application Support/Claude/` on macOS or `%APPDATA%\Claude\` on Windows):
 
 ```json
-JSON
 {
   "mcpServers": {
     "akamai-functions": {
