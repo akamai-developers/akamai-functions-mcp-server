@@ -1,32 +1,111 @@
-# Akamai Functions MCP Server
+# 🚀 Akamai Functions MCP Server
 
-An MCP (Model Context Protocol) server that connects your AI Assistant or AI Agent to Akamai Functions, allowing you to retrieve essential information about the accounts you've access to and the applications you've deployed to Akamai Functions.
+[![Build Status](https://github.com/ThorstenHans/akamai-functions-mcp-server/actions/workflows/release.yml/badge.svg)](https://github.com/ThorstenHans/akamai-functions-mcp-server/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ThorstenHans/akamai-functions-mcp-server)](https://goreportcard.com/report/github.com/ThorstenHans/akamai-functions-mcp-server)
+[![Spin Plugin](https://img.shields.io/badge/Spin-Plugin-9d31f0?style=flat-square&logo=webassembly)](https://github.com/spinframework/spin)
+![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
 
-This MCP server supports `stdio`
+Unlock the power of **Akamai Functions** within your AI Assistant. This MCP (Model Context Protocol) server allows tools like Claude Desktop or Cursor to interact with your edge applications using natural language.
 
-## Prerequisites
+Built in **Go** and delivered as a **Spin Plugin**.
 
-The *Akamai Functions MCP Server* requires the following:
+---
 
-- The `spin` CLI being installed on your system (See [https://spinframework.dev](https://spinframework.dev))
-- The `aka` plugin for `spin` must be installed and authorized for interacting with Akamai Functions on your behalf
+## 🛑 Prerequisites
 
-## Available Tools 🛠️
+Before adding the server to your AI client, ensure your local environment is ready:
 
-The *Akamai Functions MCP Server* provides the following tools ⚒️:
+1. **Plugin Installed**: You need the `aka` plugin for Spin:
 
-### Account-specific Tools
+    ```bash
+    spin plugin install aka --yes
+    ```
 
-- `list_accounts` - List all Akamai Functions accounts you can access
-- `list_apps` - List all apps for a particular Akamai Functions account (not providing an `account id`, will list tools from your default account)
-- `search_app` - Find an application by a search term (`query`). This command iterates over all Akamai Functions accounts you've access to
+2. **Login Required**: You must be authenticated via the `aka` plugin for `spin:
 
-### App-specific Tools
+    ```bash
+    spin aka login
+    ```
 
-- `get_app_status` - Retrieve the status of an application deployed to Akamai Functions
-- `get_app_url` - Retrieve the public URL of an application deployed to Akamai Functions
-- `get_app_history` - Retrieve deployment history of an application deployed to Akamai Functions
-- `get_app_logs` - Retrieve logs of an application deployed to Akamai Functions
+---
+
+## 📦 Installation
+
+### Install the latest version of the plugin
+
+The latest stable release of the `akamai-functions-mcp` plugin can be installed like so:
+
+```bash
+spin plugins update
+spin plugin install akamai-functions-mcp
+```
+
+### Install the canary version of the plugin
+
+The canary release of the `akamai-functions-mcp` represents the most recent commits on main and may not be stable, with some features still in progress.
+
+```bash
+spin plugins install --url https://github.com/ThorstenHans/akamai-functions-mcp-server/releases/download/canary/gh.json
+```
+
+### Install from a local build
+
+Alternatively, use the `spin pluginify` plugin to install from a fresh build. This will use the `pluginify` manifest (`spin-pluginify.toml`) to package the plugin and proceed to install it:
+
+```bash
+spin plugins install pluginify
+go build -o akamai-functions-mcp main.go
+spin pluginify --install
+```
+
+## ⚙️ Configuration
+
+To let your AI Assistant use the server, add the `spin` command to your configuration.
+
+### Claude Desktop
+
+Update your `claude_desktop_config.json` (found in `~/Library/Application Support/Claude/` on macOS or `%APPDATA%\Claude\` on Windows):
+
+```json
+JSON
+{
+  "mcpServers": {
+    "akamai-functions": {
+      "command": "spin",
+      "args": ["akamai-functions-mcp"]
+    }
+  }
+}
+```
+
+### Cursor / VS Code
+
+- Navigate to Settings > MCP
+- Click + Add Server
+- Name: `Akamai Functions`
+- Type: `command`
+- Command: `spin akamai-functions-mcp`
+
+## 🤖 Example Interactions
+
+Your AI now acts as a technical assistant for your edge infrastructure. Try asking:
+
+- "Show me all applications in my 'staging' account."
+- "What's the current status and URL for the 'edge-api' app?"
+- "Check the logs for 'image-processor' look for any 404 errors."
+- "List my available Akamai Functions accounts."
+
+## 🛠 Available Tools
+
+| Tool | Description |
+| ---- | ----------- |
+| `list_accounts` | Fetch all Akamai Functions accounts associated with your login. |
+| `list_apps` | Inventory of deployed applications (filterable by account/name). |
+| `get_app_status` | Detailed health, deployment history, and active URLs. |
+| `get_app_url` | Retrieve the public URL of an application deployed to Akamai Functions |
+| `get_app_logs` | Real-time execution log retrieval. |
+| `get_app_history` | Retrieve deployment history of an application deployed to Akamai Functions |
+| `search_app` | Find an application by a search term (`query`). This command iterates over all Akamai Functions accounts you've access to |
 
 ## Available Resources 📄
 
