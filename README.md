@@ -18,7 +18,8 @@ Before adding the server to your AI client, ensure your local environment is rea
 1. **Plugin Installed**: You need the `aka` plugin for Spin:
 
     ```bash
-    spin plugin install aka --yes
+    spin plugins update
+    spin plugins install aka --yes
     ```
 
 2. **Login Required**: You must be authenticated via the `aka` plugin for `spin:
@@ -37,7 +38,7 @@ The latest stable release of the `akamai-functions-mcp` plugin can be installed 
 
 ```bash
 spin plugins update
-spin plugin install akamai-functions-mcp
+spin plugins install akamai-functions-mcp
 ```
 
 ### Install the canary version of the plugin
@@ -60,7 +61,7 @@ spin pluginify --install
 
 ## ⚙️ Configuration
 
-To let your AI Assistant use the server, add the `spin` command to your configuration.
+To let your AI Assistant use the server, add the `spin` command to your configuration. Optionally, enable debug logging by appending the `--debug` flag to the `args` array.
 
 ### Claude Desktop
 
@@ -83,7 +84,8 @@ Update your `claude_desktop_config.json` (found in `~/Library/Application Suppor
 - Click + Add Server
 - Name: `Akamai Functions`
 - Type: `command`
-- Command: `spin akamai-functions-mcp`
+- Command: `spin`
+- Args: `akamai-functions-mcp`
 
 ## 🤖 Example Interactions
 
