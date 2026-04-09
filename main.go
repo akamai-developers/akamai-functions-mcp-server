@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -13,9 +14,21 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
+var Version string = "dev"
+
 func main() {
 	debug := flag.Bool("debug", false, "enable debug logging")
+	version := flag.Bool("version", false, "print version and exit")
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("Akamai Functions MCP Server\n")
+		fmt.Printf("---------------------------\n")
+		fmt.Printf("Version: %s\n", Version)
+		fmt.Printf("GitHub: https://github.com/akamai-developers/akamai-functions-mcp-server\n")
+		os.Exit(0)
+		return
+	}
 
 	var logger *log.Logger
 	if *debug {
@@ -47,7 +60,7 @@ func main() {
 
 	mcpServer := server.NewMCPServer(
 		"Akamai Functions MCP Server",
-		"0.1.0",
+		Version,
 		serverOptions...,
 	)
 
