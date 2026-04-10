@@ -153,8 +153,8 @@ func (a *AkamaiFunctionsTools) DeployApp(ctx context.Context, request mcp.CallTo
 
 // Link Application
 type LinkAppArgs struct {
-	App     App     `json:"app" jsonschema:"description=REQUIRED: The existing Akamai application to link to the current workspace. You must provide either the ID or the Name."`
-	Account Account `json:"account,omitempty" jsonschema:"description=Optionally specify the target Akamai account by name or ID. Defaults to the current account context."`
+	App     App     `json:"app" jsonschema:"REQUIRED: The existing Akamai application to link to the current workspace. You must provide either the ID or the Name."`
+	Account Account `json:"account,omitempty" jsonschema:"Optionally specify the target Akamai account by name or ID. Defaults to the current account context."`
 }
 
 func (a LinkAppArgs) Validate() error {
