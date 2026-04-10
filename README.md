@@ -76,10 +76,24 @@ Update your `claude_desktop_config.json` (found in `~/Library/Application Suppor
 
 - Navigate to Settings > MCP
 - Click + Add Server
-- Name: `Akamai Functions`
+- Name: `Akamai Functions MCP Server`
 - Type: `command`
 - Command: `akamai-functions-mcp`
 - Args: ``
+
+### Zed
+
+From the command palette select the `agent: add context server` action provide the following JSON configuration and save the configuration by pressing `Add Server`:
+
+```json
+{
+  "Akamai Functions MCP Server": {
+    "command": "akamai-functions-mcp",
+    "args": [],
+    "env": {}
+  }
+}
+```
 
 ## 🤖 Example Interactions
 
@@ -107,4 +121,4 @@ Your AI now acts as a technical assistant for your edge infrastructure. Try aski
 
 ## Available Resources 📄
 
-- The `spin aka` command Reference - Returns the full command reference as markdown
+- The `spin aka` command Reference - Returns the full command reference as markdown.
