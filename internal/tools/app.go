@@ -127,10 +127,10 @@ func (a *AkamaiFunctionsTools) GetAppUrl(ctx context.Context, request mcp.CallTo
 // Deploy application
 
 type DeployAppArgs struct {
-	App                   App      `json:"app,omitempty" jsonschema:"description=The target app. If empty, the server checks local context."`
-	Account               Account  `json:"account,omitempty" jsonschema:"description=Optionally specify the target Akamai Functions account by ID. If omitted, the user's default account is used."`
-	IsFirstTimeDeployment bool     `json:"isFirstTimeDeployment" jsonschema:"description=CRITICAL: Set to true ONLY if you intend to create a brand new application. If you want to deploy to an existing app that isn't linked locally, you must provide the App.Id to link it."`
-	Variables             []string `json:"variables,omitempty" jsonschema:"description=List of variables in order. Use 'KEY=VALUE' for inline or '@file.json' for files. E.g. ['@base.json', 'ENV=prod']. The last specified key wins."`
+	App                   App      `json:"app,omitempty" jsonschema:"The target app. If empty, the server checks local context."`
+	Account               Account  `json:"account,omitempty" jsonschema:"Optionally specify the target Akamai Functions account by ID. If omitted, the user's default account is used."`
+	IsFirstTimeDeployment bool     `json:"isFirstTimeDeployment" jsonschema:"CRITICAL: Set to true ONLY if you intend to create a brand new application. If you want to deploy to an existing app that isn't linked locally, you must provide the App.Id to link it."`
+	Variables             []string `json:"variables,omitempty" jsonschema:"List of variables in order. Use 'KEY=VALUE' for inline or '@file.json' for files. E.g. ['@base.json', 'ENV=prod']. The last specified key wins."`
 }
 
 func (a DeployAppArgs) Validate() error {
